@@ -22,7 +22,7 @@ function ChatWindow({ messages, setMessages }) {
     setIsLoading(true);
 
     // 2️⃣ Add bot placeholder ONCE
-    setMessages((prev) => [...prev, { role: "bot", text: "" }]);
+    setMessages((prev) => [...prev, { role: "bot", text: "", citations: [] }]);
 
     try {
       const response = await fetch("http://localhost:8000/ask", {
@@ -39,6 +39,7 @@ function ChatWindow({ messages, setMessages }) {
       const decoder = new TextDecoder("utf-8");
 
       let botText = "";
+      let citations = [];
 
       while (true) {
         const { done, value } = await reader.read();
@@ -60,7 +61,11 @@ function ChatWindow({ messages, setMessages }) {
 
             try {
               const json = JSON.parse(data);
-              if (json.text) botText += json.text;
+              if (json.text) {
+                botText += json.text;
+              } else if (json.citations) {
+                citations = json.citations;
+              }
             } catch {
               botText += data;
             }
@@ -75,6 +80,7 @@ function ChatWindow({ messages, setMessages }) {
             updated[updated.length - 1] = {
               ...updated[updated.length - 1],
               text: botText,
+              citations: citations,
             };
             return updated;
           });
@@ -87,6 +93,7 @@ function ChatWindow({ messages, setMessages }) {
         updated[updated.length - 1] = {
           role: "bot",
           text: "❌ Unable to get response. Please try again.",
+          citations: [],
         };
         return updated;
       });
@@ -99,7 +106,7 @@ function ChatWindow({ messages, setMessages }) {
     <div className="chat-window">
       <div className="messages">
         {messages.map((m, i) => (
-          <MessageBubble key={i} role={m.role} text={m.text} />
+          <MessageBubble key={i} role={m.role} text={m.text} citations={m.citations || []} />
         ))}
         <div ref={bottomRef} />
       </div>

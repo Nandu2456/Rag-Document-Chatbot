@@ -6,24 +6,20 @@ import Notification from "./components/Notification";
 
 function App() {
   const [messages, setMessages] = useState([]);
-  const [selectedFile, setSelectedFile] = useState(null);
+  const [selectedFiles, setSelectedFiles] = useState([]);
   const [notification, setNotification] = useState(null);
 
   const handleClearChat = () => {
     setMessages([]);
   };
 
-  const handleClearFile = () => {
-    setSelectedFile(null);
+  const handleClearFiles = () => {
+    setSelectedFiles([]);
   };
 
   const showNotification = (message, type = "success") => {
     setNotification({ message, type });
   };
-
-  
-
-
 
   const hideNotification = () => {
     setNotification(null);
@@ -40,17 +36,15 @@ function App() {
       )}
       <h2>📄 Document Q&A Assistant</h2>
       <UploadPanel
-        selectedFile={selectedFile}
-        setSelectedFile={setSelectedFile}
+        selectedFiles={selectedFiles}
+        setSelectedFiles={setSelectedFiles}
         onNotification={showNotification}
       />
       <Controls
-  onClearChat={handleClearChat}
-  onClearFile={handleClearFile}
-  onNotification={() =>
-    showNotification("Document uploaded and indexed successfully!", "success")
-  }
-/>
+        onClearChat={handleClearChat}
+        onClearFiles={handleClearFiles}
+        onNotification={showNotification}
+      />
 
       <ChatWindow messages={messages} setMessages={setMessages} />
     </div>

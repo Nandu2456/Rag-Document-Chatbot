@@ -1,31 +1,38 @@
 import { clearChat, resetKnowledge } from "../services/api";
 
-function Controls({ onClearChat, onClearFile }) {
+function Controls({ onClearChat, onClearFiles, onNotification }) {
   const handleClearChat = async () => {
     try {
       await clearChat();
       onClearChat();
+      if (onNotification) {
+        onNotification("Chat cleared successfully!", "success");
+      }
     } catch (error) {
       console.error("Error clearing chat:", error);
-      alert("Failed to clear chat. Please try again.");
+      if (onNotification) {
+        onNotification("Failed to clear chat. Please try again.", "error");
+      }
     }
   };
 
   const handleResetKnowledge = async () => {
-    
-    
     try {
       const response = await resetKnowledge();
-      // Clear chat and selected file when knowledge base is reset
+      // Clear chat and selected files when knowledge base is reset
       onClearChat();
-      if (onClearFile) {
-        onClearFile();
+      if (onClearFiles) {
+        onClearFiles();
       }
       
-      alert(response.data.message || "Knowledge base reset successfully. All documents have been removed.");
+      if (onNotification) {
+        onNotification(response.data.message || "Knowledge base reset successfully. All documents have been removed.", "success");
+      }
     } catch (error) {
       console.error("Error resetting knowledge base:", error);
-      alert("Failed to reset knowledge base. Please try again.");
+      if (onNotification) {
+        onNotification("Failed to reset knowledge base. Please try again.", "error");
+      }
     }
   };
 
