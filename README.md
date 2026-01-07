@@ -113,11 +113,10 @@ pip install -r requirements.txt
 
 #### Create `.env` file
 
-```env
-OPENAI_API_KEY=your_api_key_here
-```
+Create a .env file in the root directory:
 
-> ⚠️ `.env` should NOT be committed to GitHub
+GROQ_API_KEY=your_groq_api_key
+COHERE_API_KEY=your_cohere_api_key
 
 #### Run Backend Server
 
@@ -170,7 +169,7 @@ Frontend will run at:
 
 ---
 
-demo: 
+demo:  https://drive.google.com/file/d/1re1QKFTRaOsbQNfEHLbAB97ApCfBcT7n/view?usp=sharing
 
 ## 👤 Author
 
@@ -178,5 +177,6 @@ demo:
 GitHub: [https://github.com/Nandu2456](https://github.com/Nandu2456)
 
 ---
+
 
 
